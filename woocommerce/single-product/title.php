@@ -22,36 +22,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 the_title( '<h1 class="product_title entry-title product-info__title">', '</h1>' );
 global $product;
 
-$country = TannyBunny_Custom_Shipping_Helper::get_customer_country();
-$shipping = new TannyBunny_Custom_Shipping_Helper( $product, $country );
-
 $material = $product->get_attribute('materials');
 ?>
 <div class="product-info">
     <ul class="product-info__list">
         <li class="product-info__list-item">
-            <span>SKU</span>
+            <span>Артикул</span>
             <span><?php echo ( $sku = $product->get_sku() ) ? $sku : esc_html__( 'N/A', 'woocommerce' ); ?></span>
         </li>
         <?php if ($material) : ?>
         <li class="product-info__list-item">
-            <span>Material</span>
+            <span>Материал</span>
             <span><?php echo $material;?></span>
         </li>
 				<?php endif; ?>
-				<?php if ( $shipping->product_has_warehouses ) : ?>
-        <li class="product-info__list-item">
-            <span>Shipping</span>
-            <span><?php echo $shipping->render_warehouse_options(); ?></span>
-        </li>
-        <?php endif; ?>
     </ul>
-		
-		<?php echo $shipping->render_shipping_details(); ?>
 		
     <div class="product-collapse scrollToDescription">
         <button class="product-collapse__btn">
-            <span>Go to the description</span>
+            <span>Показать описание</span>
             <svg class="icon">
                 <use xlink:href="<?php echo get_template_directory_uri(); ?>/assets/svg/sprite/sprite.svg#chevron-down"></use>
             </svg>
