@@ -989,6 +989,108 @@ $attribute_name = 'pa_warehouse';
 add_action('init', 'update_attribute_of_all_products');
 
 
+
+function translate_ear_attribute_of_all_products() {
+	
+	if ( ! isset( $_GET['translate_ear_attribute_of_all_products'] ) ) {
+		return;
+	} 
+
+	if ( isset( $_GET['translate_ear_attribute_of_all_products'] ) ) {
+		if ( $_GET['translate_ear_attribute_of_all_products'] != date('d')){
+			return;
+			}
+		else {
+			echo 'TEST OK-- ';
+		}
+	}
+
+	// Get all product IDs
+	$args = array(
+		'post_type'      => 'product',
+		'posts_per_page' => -1,
+		'post_status'    => 'publish',
+		'fields'         => 'ids',
+	);
+
+	$attribute_name = 'ear';
+
+	$product_ids = get_posts($args);
+
+	foreach ($product_ids as $product_id) {
+		$product = wc_get_product($product_id);
+		
+		
+		if ( $product ) { 
+			
+			$attributes = get_post_meta( $product_id, '_product_attributes' );
+
+
+			$new_attributes = $attributes[0];
+
+			//echo('OLD<pre>' . print_r( $attributes[0] , 1 ) . '</pre><br>' );	
+
+			if ( isset($new_attributes[$attribute_name]) ) {
+				$new_attributes[$attribute_name]['name'] = 'Ушко';
+				$new_attributes[$attribute_name]['value'] = translate_ear_attribute( $new_attributes[$attribute_name]['value'] );
+
+				echo('NEW<pre>' . print_r( $new_attributes[$attribute_name] , 1 ) . '</pre><br>' );	
+			}
+
+			//update_post_meta( $product_id, '_product_attributes', $new_attributes );
+		}
+	}	
+	die();
+}
+
+add_action('init', 'translate_ear_attribute_of_all_products');
+
+
+function translate_ear_attribute( $value ) {
+	
+	$values = array_map('trim', explode('|', $value));
+	
+	$translated_values = [];
+	
+	$translate_array = [
+		'Left ear' => 'Левое ушко',
+		'Right ear' => 'Правое ушко',
+		'Pair' => 'Пара',
+		'Any ear' => 'Один',
+		'One' => 'Один',
+		'Set (earcuff & two spiders)' => 'Набор (кафф и два паука)',
+		'Set (one ear cuff & two feathers)' => 'Набор (кафф и два пера)',
+		'One ear cuff & one feather' => 'Один кафф и одно перо',
+		'Earcuff+stud' => 'Кафф и гвоздик',
+		'Left ear+ 1 stud' => 'Левое ушко и 1 гвоздик',
+		'Left ear+ 2 studs' => 'Левое ушко и 2 гвоздика',
+		'Right ear + Stud' => 'Правое ушко и гвоздик',
+		'Right ear+stud' => 'Правое ушко и гвоздик',
+		'Left ear+stud' => 'Левое ушко и гвоздик',
+		'Left ear+Stud' => 'Левое ушко и гвоздик',
+	];
+
+	foreach ($values as $value) {
+		if ( isset($translate_array[$value]) ) {
+			$translated_values[] = $translate_array[$value];
+		}
+		else {
+			echo('NOT FOUND: ' . $value . '<br>');
+			$translated_values[] = $value;
+		}
+	}
+
+	$translated_value = implode(' | ', $translated_values);
+	
+	return $translated_value;
+}
+
+function translate_ear_attribute_value( $value ) {
+	
+	
+	return $value;
+}
+
 add_action("wp_footer", "display_geolocation_debug_info_when_requested");
 
 function display_geolocation_debug_info_when_requested() {
@@ -1011,5 +1113,3 @@ function display_geolocation_debug_info_when_requested() {
     echo '</pre>';
   }
 }
-
-
