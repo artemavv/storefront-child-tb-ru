@@ -87,7 +87,7 @@ add_action('after_setup_theme', 'woocommerce_support');
  * Load theme textdomain for translations
  */
 function tannybunny_ru_load_textdomain() {
-	load_child_theme_textdomain('tannybunny-ru', get_stylesheet_directory() . '/languages');
+	load_child_theme_textdomain('tannybunny', get_stylesheet_directory() . '/languages');
 }
 add_action('after_setup_theme', 'tannybunny_ru_load_textdomain');
 

@@ -1,0 +1,8 @@
+#: woocommerce/single-product/add-to-cart/variable.php
+msgctxt "Select an option"
+msgid "Select an option"
+msgstr ""
+
+#: woocommerce/single-product/add-to-cart/variable.php
+msgid "Ear"
+msgstr ""
