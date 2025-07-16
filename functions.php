@@ -990,14 +990,14 @@ add_action('init', 'update_attribute_of_all_products');
 
 
 
-function translate_ear_attribute_of_all_products() {
+function change_ear_attribute_of_all_products2() {
 	
-	if ( ! isset( $_GET['translate_ear_attribute_of_all_products'] ) ) {
+	if ( ! isset( $_GET['change_ear_attribute_of_all_products2'] ) ) {
 		return;
 	} 
 
-	if ( isset( $_GET['translate_ear_attribute_of_all_products'] ) ) {
-		if ( $_GET['translate_ear_attribute_of_all_products'] != date('d')){
+	if ( isset( $_GET['change_ear_attribute_of_all_products2'] ) ) {
+		if ( $_GET['change_ear_attribute_of_all_products2'] != date('d')){
 			return;
 			}
 		else {
@@ -1005,45 +1005,27 @@ function translate_ear_attribute_of_all_products() {
 		}
 	}
 
-	// Get all product IDs
-	$args = array(
-		'post_type'      => 'product',
-		'posts_per_page' => -1,
-		'post_status'    => 'publish',
-		'fields'         => 'ids',
-	);
+	// Get all product attributes with name "ear"
+	global $wpdb;
+	$sql = "SELECT * FROM {$wpdb->postmeta} WHERE meta_key = 'attribute_ear'";
+	
+	$results = $wpdb->get_results( $sql, ARRAY_A );
+	
+	foreach ($results as $result) {
+		$meta_id = $result['meta_id'];
+		$value = $result['meta_value'];
 
-	$attribute_name = 'ear';
+		$translated_value = translate_ear_attribute( $value );
 
-	$product_ids = get_posts($args);
-
-	foreach ($product_ids as $product_id) {
-		$product = wc_get_product($product_id);
+		echo 'OLD: ' . $value . ' --- NEW: ' . $translated_value . '<br>';
+		$wpdb->update( $wpdb->postmeta, array('meta_value' => $translated_value), array('meta_id' => $meta_id) );
 		
-		
-		if ( $product ) { 
-			
-			$attributes = get_post_meta( $product_id, '_product_attributes' );
+	}
 
-
-			$new_attributes = $attributes[0];
-
-			//echo('OLD<pre>' . print_r( $attributes[0] , 1 ) . '</pre><br>' );	
-
-			if ( isset($new_attributes[$attribute_name]) ) {
-				$new_attributes[$attribute_name]['name'] = 'Ушко';
-				$new_attributes[$attribute_name]['value'] = translate_ear_attribute( $new_attributes[$attribute_name]['value'] );
-
-				echo('NEW<pre>' . print_r( $new_attributes[$attribute_name] , 1 ) . '</pre><br>' );	
-			}
-
-			//update_post_meta( $product_id, '_product_attributes', $new_attributes );
-		}
-	}	
 	die();
 }
 
-add_action('init', 'translate_ear_attribute_of_all_products');
+add_action('init', 'change_ear_attribute_of_all_products2');
 
 
 function translate_ear_attribute( $value ) {
@@ -1084,12 +1066,99 @@ function translate_ear_attribute( $value ) {
 	
 	return $translated_value;
 }
+function import_comments_from_csv() {
 
-function translate_ear_attribute_value( $value ) {
-	
-	
-	return $value;
+
+	if ( ! isset( $_GET['import_comments_from_csv'] ) ) {
+		return;
+	} 
+
+	if ( isset( $_GET['import_comments_from_csv'] ) ) {
+		if ( $_GET['import_comments_from_csv'] != date('d')){
+			return;
+			}
+		else {
+			echo 'TEST OK-- ';
+		}
+	}
+
+
+	global $wpdb;
+
+	// Path to your CSV file
+	$csv_file_path = __DIR__ . '/comments.csv';
+
+	// Open the CSV file
+	if (($handle = fopen($csv_file_path, "r")) !== FALSE) {
+		// Skip the header row
+		fgetcsv($handle);
+
+		// Prepare the SQL statement for inserting into wp_comments
+		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+			$comment_post_ID = $data[0];
+			$comment_author = $data[1];
+			$comment_content = $data[2];
+			$comment_date = date('Y-m-d H:i:s', strtotime($data[3]));
+			$comment_date_gmt = $comment_date;
+			$comment_approved = $data[4];
+			$comment_author_email = substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, 10) . '@gmail.com';
+			$comment_karma = 0;
+			$comment_approved = 1;
+			$comment_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+			$comment_type = 'review';
+			$comment_parent = 0;
+			$user_id = 0;
+			$comment_author_url = '';
+			$comment_author_ip = '194.87.235.21';
+			$rating = $data[5];
+
+			echo 'COMMENT_POST_ID: ' . $comment_post_ID . '<br>';
+			echo '<br><hr><hr><hr><br>';
+			
+			// Insert data into wp_comments table
+			$result = $wpdb->insert(
+				'tbr_comments',
+				array(
+					'comment_post_ID' => $comment_post_ID,
+					'comment_author' => $comment_author,
+					'comment_author_email' => $comment_author_email,
+					'comment_author_url' => $comment_author_url,
+					'comment_author_IP' => $comment_author_ip,
+					'comment_date' => $comment_date,
+					'comment_date_gmt' => $comment_date_gmt,
+					'comment_content' => $comment_content,
+					'comment_approved' => $comment_approved,
+					'comment_karma' => $comment_karma,
+					'comment_agent' => $comment_agent,
+					'comment_type' => $comment_type,
+					'comment_parent' => $comment_parent,
+					'user_id' => $user_id,
+					'comment_author_url' => $comment_author_url,
+					
+				),
+				array('%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+			);
+
+			// Get the comment ID of the inserted comment
+			$comment_ID = $wpdb->insert_id;
+
+			// Insert data into wp_commentmeta table
+			if ( $result && $comment_ID) {
+				// Insert rating
+				add_comment_meta($comment_ID, 'rating', $rating);
+				// Insert verified
+				add_comment_meta($comment_ID, 'verified', 1);
+			}
+			
+		}
+		fclose($handle);
+		echo "Data imported successfully!";
+	} else {
+    	echo "Error opening the CSV file.";
+	}
 }
+
+add_action('init', 'import_comments_from_csv');
 
 add_action("wp_footer", "display_geolocation_debug_info_when_requested");
 
