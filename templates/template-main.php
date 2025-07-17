@@ -61,9 +61,11 @@ get_header(); ?>
 																						// $price = number_format((float)$product->get_variation_price( 'min', true ), 2, '.', '');
 																						// echo $price.''.get_woocommerce_currency_symbol();  
 
-																							$price = get_post_meta( $main_product_id, '_price', true);
-																							$price_fm = do_shortcode('[woo_multi_currency_exchange price="' . $price . '" ]');
-
+                                              $product = get_product($main_product_id);
+																							//$price = get_post_meta( $main_product_id, '_price', true);
+																							//$price_fm = do_shortcode('[woo_multi_currency_exchange price="' . $price . '" ]');
+                                              
+                                              $price_fm = wc_price( $product->get_price() );
 																							echo $price_fm;
 																						?>
 																				</div>
@@ -137,6 +139,8 @@ get_header(); ?>
                                 <?php 
                                                     
                                     $price = round($product->get_variation_price('min', true));
+                                    
+                                    /*
                                     $wmc = WOOMULTI_CURRENCY_Data::get_ins();
 
                                     $currency = $wmc->get_current_currency();
@@ -159,12 +163,12 @@ get_header(); ?>
                                     else {
                                         $price_fm = wc_price($price);
                                     }
-                                    
-                                    //$price_fm =  do_shortcode('[woo_multi_currency_exchange price="' . $price . '" ]');
-                                    echo $price_fm;
+                                    */
+                                    $price_fm =  $product->get_price();
+                                    echo wc_price($price_fm);
                                     ?>
                               </div>
-                              <div class="gallery__card-more">Read more</div>
+                              <div class="gallery__card-more">Подробности</div>
                             </div>
                         </a>
 
@@ -208,7 +212,7 @@ get_header(); ?>
     
  <div class="about">
         <div class="container">
-            <h2 class="title">About us</h2>
+            <h2 class="title">Про нас</h2>
             <div class="row">
                 <div class="col-lg-5 order-lg-1 order-2">
                     <div class="about__item">
@@ -230,14 +234,14 @@ get_header(); ?>
    
 	 <div class="contacts">
         <div class="container">
-            <h2 class="title" style="margin-top: 50px">Contacts</h2>
+            <h2 class="title" style="margin-top: 50px">Контакты</h2>
             <div class="contacts__inner">
                 <div class="contacts__info">
 										<div class="contacts__info-item">
                         <svg class="icon">
                             <use xlink:href="<?php echo get_template_directory_uri(); ?>/assets/svg/sprite/sprite.svg#cart"></use>
                         </svg>
-                        <h4 class="contacts__info-title">Warehouse (For Shipments & Returns in the USA)</h4>
+                        <h4 class="contacts__info-title">Адрес склада</h4>
                         <div class="contacts__info-text"><?php the_field('warehouse_address', 'option'); ?></div>
 												<div class="contacts__info-text" style="padding-top: 20px; font-style: italic;"><?php the_field('warehouse_address_note', 'option'); ?></div>
                     </div>
@@ -245,7 +249,7 @@ get_header(); ?>
                         <svg class="icon">
                             <use xlink:href="<?php echo get_template_directory_uri(); ?>/assets/svg/sprite/sprite.svg#map"></use>
                         </svg>
-                        <h4 class="contacts__info-title">Company Registration & Billing Address</h4>
+                        <h4 class="contacts__info-title">Юридический адрес</h4>
                         <div class="contacts__info-text"><?php the_field('registration_address', 'option'); ?></div>
 												<div class="contacts__info-text" style="padding-top: 20px; font-style: italic;"><?php the_field('registration_address_note', 'option'); ?></div>
                     </div>
@@ -253,7 +257,7 @@ get_header(); ?>
                         <svg class="icon">
                             <use xlink:href="<?php echo get_template_directory_uri(); ?>/assets/svg/sprite/sprite.svg#phone"></use>
                         </svg>
-                        <h4 class="contacts__info-title">Phone</h4>
+                        <h4 class="contacts__info-title">Телефон</h4>
                         <a class="contacts__info-link" href="tel:<?php the_field('phone', 'option'); ?>"><?php the_field('phone', 'option'); ?></a>
                     </div>
                     <div class="contacts__info-item">

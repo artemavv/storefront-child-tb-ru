@@ -42,7 +42,7 @@ if (!$image) {
                 <h4 class="product-card__title"><?php the_title(); ?></h4>
                 <ul class="product-card__list">
                     <li class="product-card__list-item">
-                        Material: <span><?php global $product;
+                        Материал: <span><?php global $product;
                                         /*echo"<pre>";
                     print_r($product);*/
                                         echo ($product->get_attribute('materials') ? $product->get_attribute('materials') : 'N/A'); ?></span>
@@ -51,8 +51,8 @@ if (!$image) {
 
                 <div class="product-card__price">
                     <?php
-                    $price = number_format((float)$product->get_variation_price('min', true), 2, '.', '');
-                    $price_fm =  do_shortcode('[woo_multi_currency_exchange product_id="" currency="" price="'.$price.'" original_price=""]');
+                    $price = number_format((float)$product->get_variation_price('min', true), 0, '.', '');
+                    $price_fm =  wc_price($price);
                     echo $price_fm;
                     ?>
                 </div>

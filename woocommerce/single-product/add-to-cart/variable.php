@@ -90,7 +90,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
             <?php if (count($customVariations) > 0) : ?>
 
                 <?php foreach ($customVariations as $customVariation) : ?>
-                    <label class="product__select-label"><?php echo $customVariation['name_of_variation']; ?>:
+                    <label class="product__select-label"><?php echo __( $customVariation['name_of_variation'], 'tannybunny'); ?>:
                         <select class="product__select" id="productSelect2" >
 
                             <?php foreach ($customVariation['items_of_variation'] as $item) : ?>
@@ -98,7 +98,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
                                 <option value="<?php echo get_permalink( $item['product_of_variant'] ); ?>"
                                         <?php if ($item['product_of_variant'] === $product->id) echo 'selected'; ?>
                                 >
-                                    <?php echo $item['name_of_variant']; ?>
+                                    <?php echo __($item['name_of_variant'], 'tannybunny'); ?>
                                 </option>
 
                             <?php endforeach; ?>

@@ -18,3 +18,22 @@ msgstr "Выберите..."
 #: woocommerce/single-product/add-to-cart/variable.php
 msgid "Ear"
 msgstr "Ушко"
+
+#: woocommerce/single-product/add-to-cart/variable.php
+msgid "animal"
+msgstr "Животное"
+
+#: woocommerce/single-product/add-to-cart/variable.php
+msgid "kitsune"
+msgstr "кицунэ"
+
+#: woocommerce/single-product/add-to-cart/variable.php
+msgid "cat"
+msgstr "кошка"
+
+#: woocommerce/single-product/add-to-cart/variable.php
+msgid "raccoon"
+msgstr "енот"
+
+msgid "In stock"
+msgstr "В наличии"

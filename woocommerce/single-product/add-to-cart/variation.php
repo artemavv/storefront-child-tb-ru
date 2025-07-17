@@ -16,7 +16,7 @@ global $product;
 <script type="text/template" id="tmpl-variation-template">
 	<div class="woocommerce-variation-price">{{{ data.variation.price_html }}}</div>
 	<div class="woocommerce-variation-availability">{{{ data.variation.availability_html }}}</div>
-    <div class="woocommerce-variation-reviews" id="scrollToReviews">Reviews (<?php echo $product->get_review_count();?>)</div>
+    <div class="woocommerce-variation-reviews" id="scrollToReviews">Отзывы (<?php echo $product->get_review_count();?>)</div>
 </script>
 <script type="text/template" id="tmpl-unavailable-variation-template">
 	<p><?php esc_html_e( 'Sorry, this product is unavailable. Please choose a different combination.', 'woocommerce' ); ?></p>
