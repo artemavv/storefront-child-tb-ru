@@ -211,7 +211,7 @@
                     <div class="footer__contacts">
                         <div class="footer__inner">
                             <div class="footer__work">10:00-22:00</div>
-                            <div class="footer__address"><strong>Адрес склада:</strong> <?php the_field('warehouse_address', 'option'); ?></div>
+                            <div class="footer__address"><strong>Самовывоз:</strong> <?php the_field('warehouse_address', 'option'); ?></div>
 														<div class="footer__address"><strong>Юридический адрес:</strong> <?php the_field('registration_address', 'option'); ?></div>
                         </div>
                         <div class="footer__inner">

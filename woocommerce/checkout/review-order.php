@@ -41,7 +41,7 @@ defined( 'ABSPATH' ) || exit;
 						
 						<div class="product-total-check">
 							<div class="product-total-checkText">
-								Total:
+								Всего:
 							</div>
 							<div class="product-total-checkPrice">
 								<?php echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

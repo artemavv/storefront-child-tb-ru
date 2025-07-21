@@ -241,7 +241,7 @@ get_header(); ?>
                         <svg class="icon">
                             <use xlink:href="<?php echo get_template_directory_uri(); ?>/assets/svg/sprite/sprite.svg#cart"></use>
                         </svg>
-                        <h4 class="contacts__info-title">Адрес склада</h4>
+                        <h4 class="contacts__info-title">Самовывоз</h4>
                         <div class="contacts__info-text"><?php the_field('warehouse_address', 'option'); ?></div>
 												<div class="contacts__info-text" style="padding-top: 20px; font-style: italic;"><?php the_field('warehouse_address_note', 'option'); ?></div>
                     </div>

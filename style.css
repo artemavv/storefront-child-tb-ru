@@ -2486,3 +2486,14 @@ button.menu-toggle::after {
     width:100%;
   }
 }
+
+span.woocommerce-Price-currencySymbol {
+    padding-right: 6px;
+    color: #b9aa5d;
+}
+
+
+.footer-menu__list li {
+	padding-right: 10px;
+	text-align: center;
+}
